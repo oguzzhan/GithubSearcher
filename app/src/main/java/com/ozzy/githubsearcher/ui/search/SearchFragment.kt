@@ -3,20 +3,27 @@ package com.ozzy.githubsearcher.ui.search
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ozzy.githubsearcher.R
+import com.ozzy.githubsearcher.api.model.RepositorySearchResult
 import com.ozzy.githubsearcher.databinding.SearchFragmentBinding
-import kotlinx.android.synthetic.main.search_fragment.view.*
+import com.ozzy.githubsearcher.ui.search.adapter.RepositoriesAdapter
+import com.ozzy.githubsearcher.util.extension.hideKeyboard
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
     private val viewModel: SearchViewModel by viewModels()
-    private lateinit var binding : SearchFragmentBinding
+    private val adapter = RepositoriesAdapter()
+    private lateinit var binding: SearchFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,12 +39,24 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRadioGroupListener()
         initSearchInputListener()
+        initAdapter()
 
     }
 
-    private fun initRadioGroupListener(){
+    private fun initAdapter() {
+        binding.recyclerViewSearch.adapter = adapter
+        viewModel.repositoriesResult.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is RepositorySearchResult.Success -> adapter.submitList(result.data)
+                else -> Log.d("TAG", "initAdapter: ")
+            }
+        }
+    }
+
+
+    private fun initRadioGroupListener() {
         binding.radioGroupSearch.setOnCheckedChangeListener { _, checkedId ->
-            when(checkedId){
+            when (checkedId) {
                 R.id.radioButtonRepositories -> binding.viewModel!!.radioCheck.postValue("Repositories")
                 R.id.radioButtonUsers -> binding.viewModel!!.radioCheck.postValue("Users")
             }
@@ -46,17 +65,19 @@ class SearchFragment : Fragment() {
 
 
     private fun initSearchInputListener() {
-        binding.editTextSearch.setOnEditorActionListener { view: View, actionId: Int, _: KeyEvent? ->
+        binding.editTextSearch.setOnEditorActionListener { _: View, actionId: Int, _: KeyEvent? ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 binding.viewModel!!.search()
+                context.hideKeyboard()
                 true
             } else {
                 false
             }
         }
-        binding.editTextSearch.setOnKeyListener { view: View, keyCode: Int, event: KeyEvent ->
+        binding.editTextSearch.setOnKeyListener { _: View, keyCode: Int, event: KeyEvent ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 binding.viewModel!!.search()
+                context.hideKeyboard()
                 true
             } else {
                 false
