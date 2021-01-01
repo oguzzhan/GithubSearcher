@@ -1,0 +1,37 @@
+package com.ozzy.githubsearcher.ui.search
+
+import androidx.lifecycle.ViewModelProvider
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.ozzy.githubsearcher.R
+import kotlinx.android.synthetic.main.search_fragment.*
+
+class SearchFragment : Fragment() {
+
+    companion object {
+        fun newInstance() = SearchFragment()
+    }
+
+    private lateinit var viewModel: SearchViewModel
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.search_fragment, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
+        buttonGo.setOnClickListener {
+            findNavController().navigate(R.id.action_searchFragment_to_detailFragment)
+        }
+        // TODO: Use the ViewModel
+    }
+
+}
