@@ -1,7 +1,13 @@
 package com.ozzy.githubsearcher.ui.search
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class SearchViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+    val query = MutableLiveData<String>().apply { value = "" }
+    val radioCheck = MutableLiveData<String>()
+
+    fun search(){
+
+    }
 }

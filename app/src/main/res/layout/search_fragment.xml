@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.ozzy.githubsearcher.ui.search.SearchViewModel" />
@@ -15,20 +14,68 @@
         android:layout_height="match_parent"
         tools:context=".ui.search.SearchFragment">
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/editTextSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_search"
+                android:imeOptions="actionSearch"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions"
+                android:text="@={viewModel.query}"
+                tools:text="search" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RadioGroup
+            android:id="@+id/radioGroupSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checkedButton="@id/radioButtonRepositories"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/textInputLayoutSearch">
+
+            <RadioButton
+                android:id="@+id/radioButtonRepositories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_8dp"
+                android:text="@string/repositories" />
+
+            <RadioButton
+                android:id="@+id/radioButtonUsers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_8dp"
+                android:text="@string/users" />
+
+        </RadioGroup>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            app:layout_constraintTop_toBottomOf="@id/radioGroupSearch" />
+
         <TextView
-            android:id="@+id/textViewSearch"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="SearchFragment"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <Button
-            android:id="@+id/buttonGo"
-            android:text="Go Detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/textViewSearch" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/start_searching"
+            isVisible='@{viewModel.query == ""}' />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

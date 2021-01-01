@@ -1,37 +1,66 @@
 package com.ozzy.githubsearcher.ui.search
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
+import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.viewModels
 import com.ozzy.githubsearcher.R
-import kotlinx.android.synthetic.main.search_fragment.*
+import com.ozzy.githubsearcher.databinding.SearchFragmentBinding
+import kotlinx.android.synthetic.main.search_fragment.view.*
 
 class SearchFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = SearchFragment()
-    }
-
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by viewModels()
+    private lateinit var binding : SearchFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.search_fragment, container, false)
+    ): View {
+        binding = SearchFragmentBinding.inflate(inflater,container,false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
-        buttonGo.setOnClickListener {
-            findNavController().navigate(R.id.action_searchFragment_to_detailFragment)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRadioGroupListener()
+        initSearchInputListener()
+
+    }
+
+    private fun initRadioGroupListener(){
+        binding.radioGroupSearch.setOnCheckedChangeListener { _, checkedId ->
+            when(checkedId){
+                R.id.radioButtonRepositories -> binding.viewModel!!.radioCheck.postValue("Repositories")
+                R.id.radioButtonUsers -> binding.viewModel!!.radioCheck.postValue("Users")
+            }
         }
-        // TODO: Use the ViewModel
     }
 
+
+    private fun initSearchInputListener() {
+        binding.editTextSearch.setOnEditorActionListener { view: View, actionId: Int, _: KeyEvent? ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                binding.viewModel!!.search()
+                true
+            } else {
+                false
+            }
+        }
+        binding.editTextSearch.setOnKeyListener { view: View, keyCode: Int, event: KeyEvent ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                binding.viewModel!!.search()
+                true
+            } else {
+                false
+            }
+        }
+    }
 }
