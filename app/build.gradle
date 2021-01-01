@@ -1,18 +1,22 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdkVersion(Versions.COMPILE_SDK_VERSION)
+    buildToolsVersion(Versions.BUILD_TOOLS_VERSION)
 
     defaultConfig {
-        applicationId "com.ozzy.githubsearcher"
-        minSdkVersion 22
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        applicationId "com.ozzy.trendyolcase_oguzhankaracan"
+        minSdkVersion(Versions.MIN_SDK_VERSION)
+        targetSdkVersion(Versions.TARGET_SDK_VERSION)
+        versionCode(Versions.VERSION_CODE)
+        versionName(Versions.VERSION_NAME)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,16 +34,58 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    buildFeatures {
+        dataBinding true
+    }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
 }
 
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    /* Core */
+    implementation(CoreDependencies.CORE_KTX)
+    implementation(CoreDependencies.FRAGMENT_KTX)
+    implementation(CoreDependencies.APPCOMPAT)
+    implementation(CoreDependencies.MATERIAL)
+    implementation(CoreDependencies.CONSTRAINT_LAYOUT)
+    implementation(CoreDependencies.RXJAVA)
+    implementation(CoreDependencies.RXANDROID)
+    implementation(CoreDependencies.NAV)
+    implementation(CoreDependencies.NAV_UI)
+    implementation(CoreDependencies.LEGACY_SUPPORT)
+    implementation(CoreDependencies.LIVE_DATA)
+    implementation(CoreDependencies.VIEW_MODEL)
+
+    /* Test */
+    testImplementation(TestDependencies.JUNIT)
+    testImplementation(TestDependencies.JUNIT_KTX)
+    testImplementation(TestDependencies.TEST_CORE)
+    testImplementation(TestDependencies.TRUTH)
+    androidTestImplementation(TestDependencies.EXT_JUNIT)
+    androidTestImplementation(TestDependencies.ESPRESSO_CORE)
+
+    /* Dependency Injection */
+    implementation(Dagger.HILT)
+    kapt(Dagger.HILT_ANDROID_COMPILER)
+    implementation(Dagger.HILT_LIFECYCLE)
+    kapt(Dagger.HILT_COMPILER)
+    implementation(Dagger.HILT_INSTRUMENTATION_TESTING)
+    kapt(Dagger.HILT_INSTRUMENTATION_TESTING_COMPILER)
+    implementation(Dagger.HILT_UNIT_TEST)
+    kapt(Dagger.HILT_UNIT_TEST_COMPILER)
+
+    /* Network */
+    implementation(Network.RETROFIT)
+    implementation(Network.PICASSO)
+    implementation(Network.MOSHI_KOTLIN)
+    kapt(Network.MOSHI_CODEGEN)
+    implementation(Network.MOSHI)
+    implementation(Network.MOSHI_CONVERTER)
+    implementation(Network.RETROFIT_ADAPTER)
 }
