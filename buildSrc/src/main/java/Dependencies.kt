@@ -29,6 +29,7 @@ object Versions {
     const val MOSHI = "1.9.3"
     const val MOSHI_CODEGEN = "1.9.2"
     const val TRUTH = "1.0.1"
+    const val PAGING = "3.0.0-alpha11"
 }
 
 object CoreDependencies {
@@ -47,6 +48,7 @@ object CoreDependencies {
     const val LEGACY_SUPPORT = "androidx.legacy:legacy-support-v4:${Versions.LEGACY_SUPPORT}"
     const val LIVE_DATA = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.LIFE_CYCLE}"
     const val VIEW_MODEL = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.LIFE_CYCLE}"
+    const val PAGING = "androidx.paging:paging-runtime:${Versions.PAGING}"
 }
 
 object TestDependencies {

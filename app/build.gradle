@@ -61,6 +61,7 @@ dependencies {
     implementation(CoreDependencies.LEGACY_SUPPORT)
     implementation(CoreDependencies.LIVE_DATA)
     implementation(CoreDependencies.VIEW_MODEL)
+    implementation(CoreDependencies.PAGING)
 
     /* Test */
     testImplementation(TestDependencies.JUNIT)
