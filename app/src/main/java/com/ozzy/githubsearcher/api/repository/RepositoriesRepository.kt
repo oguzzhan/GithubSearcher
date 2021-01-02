@@ -49,8 +49,10 @@ class RepositoriesRepository @Inject constructor(private val githubApi: GithubAp
         try {
             val response = githubApi.searchRepositories(query, lastRequestedPage, NETWORK_PAGE_SIZE)
             Log.d("GithubRepository", "response $response")
+            Log.d("GithubRepository", "response ${response.totalCount}")
             val repos = response.items ?: emptyList()
-            searchResults.offer(RepositorySearchResult.Success(repos))
+            inMemoryCache.addAll(repos)
+            searchResults.offer(RepositorySearchResult.Success(inMemoryCache))
             successful = true
         } catch (exception: IOException) {
             searchResults.offer(RepositorySearchResult.Error(exception))

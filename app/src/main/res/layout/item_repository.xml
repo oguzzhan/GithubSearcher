@@ -22,6 +22,7 @@
             android:layout_height="20dp"
             android:gravity="center"
             android:text="@{repository.name}"
+            android:layout_margin="@dimen/margin_8dp"
             app:layout_constraintBottom_toTopOf="@+id/textViewStar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -33,23 +34,48 @@
             android:id="@+id/textViewStar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintBottom_toTopOf="@+id/textViewComment"
+            android:layout_margin="@dimen/margin_8dp"
+            android:text="@{repository.stargazersCount.toString()}"
+            app:layout_constraintBottom_toTopOf="@+id/textViewOwnerName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewName"
+            tools:text="@tools:sample/us_zipcodes" />
 
         <TextView
-            android:id="@+id/textViewComment"
+            android:id="@+id/textViewOwnerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:layout_margin="@dimen/margin_8dp"
+            android:text="@{repository.owner.ownerName}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStar"
+            tools:text="@tools:sample/full_names" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_12dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewStar"
+            app:layout_constraintEnd_toStartOf="@+id/textViewStar"
+            app:layout_constraintTop_toTopOf="@+id/textViewStar"
+            app:srcCompat="@drawable/ic_baseline_stars_24" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_12dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="4"
+            android:text="@{repository.description}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewOwnerName"
+            app:layout_constraintTop_toBottomOf="@+id/textViewName"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewStar" />
+            tools:text="@tools:sample/lorem/random" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

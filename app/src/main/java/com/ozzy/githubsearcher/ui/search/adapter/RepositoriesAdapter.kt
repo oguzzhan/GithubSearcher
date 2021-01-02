@@ -37,7 +37,7 @@ class RepositoriesAdapter : ListAdapter<Item, RepositoriesAdapter.RepositoryView
     companion object {
         private val DIFF_UTIL = object : DiffUtil.ItemCallback<Item>() {
             override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean =
-                oldItem.fullName == newItem.fullName
+                oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean =
                 oldItem == newItem

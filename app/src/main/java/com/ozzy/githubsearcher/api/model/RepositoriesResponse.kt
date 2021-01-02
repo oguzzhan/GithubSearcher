@@ -1,9 +1,9 @@
 package com.ozzy.githubsearcher.api.model
-import android.os.Parcelable
 
-import kotlinx.android.parcel.Parcelize
-import com.squareup.moshi.JsonClass
+import android.os.Parcelable
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
 
 
 /**
@@ -26,6 +26,7 @@ data class RepositoriesResponse(
 data class Item(
     @Json(name = "id")
     val id: Int? = null,
+    var position: Int? = null,
     @Json(name = "node_id")
     val nodeId: String? = null,
     @Json(name = "name")
@@ -207,4 +208,8 @@ data class Owner(
     val type: String? = null,
     @Json(name = "site_admin")
     val siteAdmin: Boolean? = null
-) : Parcelable
+) : Parcelable {
+
+    fun getOwnerName(): String = "Owner Name:${login}"
+
+}

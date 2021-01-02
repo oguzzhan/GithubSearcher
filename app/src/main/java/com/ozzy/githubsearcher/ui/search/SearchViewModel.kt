@@ -1,10 +1,12 @@
 package com.ozzy.githubsearcher.ui.search
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ozzy.githubsearcher.api.model.RepositorySearchResult
 import com.ozzy.githubsearcher.api.repository.RepositoriesRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -25,8 +27,20 @@ class SearchViewModel @ViewModelInject constructor(private val repositoriesRepos
             query.value?.let {
                 repositoriesRepository.getSearchResultStream(it)
                     .collect { result ->
-                        _repositoriesResult.postValue(result)
+                        if (result is RepositorySearchResult.Success)
+                            _repositoriesResult.postValue(result)
                     }
+            }
+        }
+    }
+
+    fun loadMore(visibleItemCount: Int, lastVisibleItemPosition: Int, totalItemCount: Int) {
+        if (visibleItemCount + lastVisibleItemPosition >= totalItemCount) {
+            val immutableQuery = query.value
+            if (immutableQuery != null) {
+                viewModelScope.launch {
+                    repositoriesRepository.requestMore(immutableQuery)
+                }
             }
         }
     }
