@@ -1,12 +1,10 @@
 package com.ozzy.githubsearcher.ui.search.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.ozzy.githubsearcher.api.model.Item
 import com.ozzy.githubsearcher.databinding.ItemRepositoryBinding
 
@@ -17,7 +15,7 @@ class RepositoriesAdapter : ListAdapter<Item, RepositoriesAdapter.RepositoryView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemRepositoryBinding.inflate(inflater)
+        val binding = ItemRepositoryBinding.inflate(inflater, parent, false)
         return RepositoryViewHolder(binding)
     }
 
