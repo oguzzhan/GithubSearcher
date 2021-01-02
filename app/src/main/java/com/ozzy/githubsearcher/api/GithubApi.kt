@@ -1,6 +1,7 @@
 package com.ozzy.githubsearcher.api
 
 import com.ozzy.githubsearcher.api.model.RepositoriesResponse
+import com.ozzy.githubsearcher.api.model.UsersResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,6 +13,13 @@ interface GithubApi {
     suspend fun searchRepositories(
         @Query("q") query: String,
         @Query("page") page: Int,
-        @Query("per_page") itemsPerPage: Int
+        @Query("per_page") itemsPerPage: Int,
     ): RepositoriesResponse
+
+    @GET("search/users")
+    suspend fun searchUsers(
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") itemsPerPage: Int,
+    ): UsersResponse
 }

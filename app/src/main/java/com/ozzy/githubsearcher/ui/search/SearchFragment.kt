@@ -1,7 +1,6 @@
 package com.ozzy.githubsearcher.ui.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +12,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ozzy.githubsearcher.R
-import com.ozzy.githubsearcher.api.model.RepositorySearchResult
+import com.ozzy.githubsearcher.core.Constants
 import com.ozzy.githubsearcher.databinding.SearchFragmentBinding
 import com.ozzy.githubsearcher.ui.search.adapter.RepositoriesAdapter
+import com.ozzy.githubsearcher.ui.search.adapter.UsersAdapter
 import com.ozzy.githubsearcher.util.extension.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,14 +25,15 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class SearchFragment : Fragment() {
 
     private val viewModel: SearchViewModel by viewModels()
-    private val adapter = RepositoriesAdapter()
+    private val repositoriesAdapter = RepositoriesAdapter()
+    private val usersAdapter = UsersAdapter()
     private lateinit var binding: SearchFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        binding = SearchFragmentBinding.inflate(inflater,container,false)
+        binding = SearchFragmentBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
@@ -42,25 +43,31 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRadioGroupListener()
         initSearchInputListener()
-        initAdapter()
+        initRepositoryAdapter()
         initScrollListener()
 
         val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         binding.recyclerViewSearch.addItemDecoration(decoration)
     }
 
-    private fun initAdapter() {
-        binding.recyclerViewSearch.adapter = adapter
+    private fun initRepositoryAdapter() {
+        binding.viewModel!!.repositoriesResult.removeObservers(viewLifecycleOwner)
+        binding.recyclerViewSearch.adapter = repositoriesAdapter
         viewModel.repositoriesResult.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is RepositorySearchResult.Success -> {
-                    adapter.submitList(result.data)
-                    adapter.notifyDataSetChanged()
-                }
-                else -> Log.d("TAG", "initAdapter: ")
-            }
+            repositoriesAdapter.submitList(result)
+            repositoriesAdapter.notifyDataSetChanged()
         }
     }
+
+    private fun initUsersAdapter() {
+        binding.viewModel!!.repositoriesResult.removeObservers(viewLifecycleOwner)
+        binding.recyclerViewSearch.adapter = usersAdapter
+        viewModel.usersResult.observe(viewLifecycleOwner) { result ->
+            usersAdapter.submitList(result)
+            usersAdapter.notifyDataSetChanged()
+        }
+    }
+
 
     private fun initScrollListener() {
         val layoutManager = binding.recyclerViewSearch.layoutManager as LinearLayoutManager
@@ -77,9 +84,16 @@ class SearchFragment : Fragment() {
 
     private fun initRadioGroupListener() {
         binding.radioGroupSearch.setOnCheckedChangeListener { _, checkedId ->
+            binding.viewModel!!.clearLists()
             when (checkedId) {
-                R.id.radioButtonRepositories -> binding.viewModel!!.radioCheck.postValue("Repositories")
-                R.id.radioButtonUsers -> binding.viewModel!!.radioCheck.postValue("Users")
+                R.id.radioButtonRepositories -> {
+                    initRepositoryAdapter()
+                    binding.viewModel!!.radioCheck.postValue(Constants.SearchType.REPOSITORIES)
+                }
+                R.id.radioButtonUsers -> {
+                    binding.viewModel!!.radioCheck.postValue(Constants.SearchType.USERS)
+                    initUsersAdapter()
+                }
             }
         }
     }

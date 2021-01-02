@@ -1,8 +1,8 @@
 package com.ozzy.githubsearcher.api.repository
 
 import com.ozzy.githubsearcher.api.GithubApi
-import com.ozzy.githubsearcher.api.model.Repository
 import com.ozzy.githubsearcher.api.model.Resource
+import com.ozzy.githubsearcher.api.model.User
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
@@ -11,20 +11,20 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-/**
- * Created by Oğuzhan Karacan on 1.01.2021.
- */
 private const val GITHUB_STARTING_PAGE_INDEX = 1
 
+/**
+ * Created by Oğuzhan Karacan on 2.01.2021.
+ */
 @ExperimentalCoroutinesApi
-class RepositoriesRepository @Inject constructor(private val githubApi: GithubApi) {
+class UsersRepository @Inject constructor(private val githubApi: GithubApi) {
 
-    private val inMemoryCache = mutableListOf<Repository>()
-    private val searchResults = ConflatedBroadcastChannel<Resource<List<Repository>>>()
+    private val inMemoryCache = mutableListOf<User>()
+    private val searchResults = ConflatedBroadcastChannel<Resource<List<User>>>()
     private var lastRequestedPage = GITHUB_STARTING_PAGE_INDEX
     private var isRequestInProgress = false
 
-    suspend fun getSearchResultStream(query: String): Flow<Resource<List<Repository>>> {
+    suspend fun getSearchResultStream(query: String): Flow<Resource<List<User>>> {
         lastRequestedPage = 1
         inMemoryCache.clear()
         requestData(query)
@@ -47,9 +47,9 @@ class RepositoriesRepository @Inject constructor(private val githubApi: GithubAp
         searchResults.offer(Resource.loading())
 
         try {
-            val response = githubApi.searchRepositories(query, lastRequestedPage, NETWORK_PAGE_SIZE)
-            val repos = response.repositories ?: emptyList()
-            inMemoryCache.addAll(repos)
+            val response = githubApi.searchUsers(query, lastRequestedPage, NETWORK_PAGE_SIZE)
+            val users = response.users ?: emptyList()
+            inMemoryCache.addAll(users)
             searchResults.offer(Resource.success(inMemoryCache))
             successful = true
         } catch (exception: IOException) {

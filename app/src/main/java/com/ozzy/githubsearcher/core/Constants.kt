@@ -7,4 +7,9 @@ class Constants {
     object NetworkService {
         const val BASE_URL = "https://api.github.com/"
     }
+
+    object SearchType {
+        const val REPOSITORIES = "REPOSITORIES"
+        const val USERS = "Users"
+    }
 }
