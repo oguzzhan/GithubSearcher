@@ -13,14 +13,29 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:padding="@dimen/margin_8dp">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:id="@+id/textViewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@{user.login}"
+            app:layout_constraintBottom_toTopOf="@+id/textViewScore"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/full_names" />
+
+        <TextView
+            android:id="@+id/textViewScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{user.scoreText}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewName"
+            tools:layout_editor_absoluteX="7dp"
+            tools:text="@tools:sample/us_phones" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -63,4 +63,6 @@ data class User(
     var siteAdmin: Boolean? = null,
     @Json(name = "score")
     var score: Double? = null,
-) : Parcelable
+) : Parcelable {
+    fun getScoreText() = "Score: ${score.toString()}"
+}
