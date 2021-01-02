@@ -5,15 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.ozzy.githubsearcher.R
+import androidx.navigation.fragment.navArgs
+import com.ozzy.githubsearcher.databinding.FragmentUserDetailBinding
 
 class UserDetailFragment : Fragment() {
+
+    private val args: UserDetailFragmentArgs by navArgs()
+    private lateinit var binding: FragmentUserDetailBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_detail, container, false)
+    ): View {
+        binding = FragmentUserDetailBinding.inflate(inflater, container, false)
+        binding.user = args.user
+        return binding.root
     }
 }
