@@ -2,7 +2,7 @@ package com.ozzy.githubsearcher.api.repository
 
 import android.util.Log
 import com.ozzy.githubsearcher.api.GithubApi
-import com.ozzy.githubsearcher.api.model.Item
+import com.ozzy.githubsearcher.api.model.Repository
 import com.ozzy.githubsearcher.api.model.RepositorySearchResult
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -20,7 +20,7 @@ private const val GITHUB_STARTING_PAGE_INDEX = 1
 @ExperimentalCoroutinesApi
 class RepositoriesRepository @Inject constructor(private val githubApi: GithubApi) {
 
-    private val inMemoryCache = mutableListOf<Item>()
+    private val inMemoryCache = mutableListOf<Repository>()
     private val searchResults = ConflatedBroadcastChannel<RepositorySearchResult>()
     private var lastRequestedPage = GITHUB_STARTING_PAGE_INDEX
     private var isRequestInProgress = false
@@ -50,7 +50,7 @@ class RepositoriesRepository @Inject constructor(private val githubApi: GithubAp
             val response = githubApi.searchRepositories(query, lastRequestedPage, NETWORK_PAGE_SIZE)
             Log.d("GithubRepository", "response $response")
             Log.d("GithubRepository", "response ${response.totalCount}")
-            val repos = response.items ?: emptyList()
+            val repos = response.repositories ?: emptyList()
             inMemoryCache.addAll(repos)
             searchResults.offer(RepositorySearchResult.Success(inMemoryCache))
             successful = true

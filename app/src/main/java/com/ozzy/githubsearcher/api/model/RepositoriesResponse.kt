@@ -17,13 +17,13 @@ data class RepositoriesResponse(
     @Json(name = "incomplete_results")
     val incompleteResults: Boolean? = null,
     @Json(name = "items")
-    val items: List<Item>? = null
+    val repositories: List<Repository>? = null
 ) : Parcelable
 
 
 @Parcelize
 @JsonClass(generateAdapter = true)
-data class Item(
+data class Repository(
     @Json(name = "id")
     val id: Int? = null,
     var position: Int? = null,

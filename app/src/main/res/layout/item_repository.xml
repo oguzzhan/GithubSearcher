@@ -8,7 +8,7 @@
 
         <variable
             name="repository"
-            type="com.ozzy.githubsearcher.api.model.Item" />
+            type="com.ozzy.githubsearcher.api.model.Repository" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
