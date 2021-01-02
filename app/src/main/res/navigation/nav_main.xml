@@ -9,14 +9,30 @@
         android:id="@+id/searchFragment"
         android:name="com.ozzy.githubsearcher.ui.search.SearchFragment"
         android:label="search_fragment"
-        tools:layout="@layout/search_fragment" >
+        tools:layout="@layout/search_fragment">
         <action
-            android:id="@+id/action_searchFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            android:id="@+id/action_searchFragment_to_repoDetailFragment"
+            app:destination="@id/repoDetailFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/detailFragment"
-        android:name="com.ozzy.githubsearcher.ui.detail.DetailFragment"
+        android:id="@+id/repoDetailFragment"
+        android:name="com.ozzy.githubsearcher.ui.detail.RepoDetailFragment"
         android:label="detail_fragment"
-        tools:layout="@layout/detail_fragment" />
+        tools:layout="@layout/repo_detail_fragment">
+        <argument
+            android:name="repo"
+            app:argType="com.ozzy.githubsearcher.api.model.Repository" />
+    </fragment>
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="com.ozzy.githubsearcher.ui.detail.UserDetailFragment"
+        android:label="fragment_user_detail"
+        tools:layout="@layout/fragment_user_detail">
+        <argument
+            android:name="user"
+            app:argType="com.ozzy.githubsearcher.api.model.User" />
+    </fragment>
 </navigation>

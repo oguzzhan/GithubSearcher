@@ -5,14 +5,14 @@
 
     <data>
         <variable
-            name="viewModel"
-            type="com.ozzy.githubsearcher.ui.detail.DetailViewModel" />
+            name="repo"
+            type="com.ozzy.githubsearcher.api.model.Repository" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.detail.DetailFragment">
+        tools:context=".ui.detail.RepoDetailFragment">
 
         <TextView
             android:layout_width="match_parent"

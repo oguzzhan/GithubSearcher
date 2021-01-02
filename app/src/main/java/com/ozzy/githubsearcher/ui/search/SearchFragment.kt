@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ozzy.githubsearcher.R
+import com.ozzy.githubsearcher.api.model.Repository
+import com.ozzy.githubsearcher.api.model.User
 import com.ozzy.githubsearcher.core.Constants
 import com.ozzy.githubsearcher.databinding.SearchFragmentBinding
 import com.ozzy.githubsearcher.ui.search.adapter.RepositoriesAdapter
@@ -25,9 +28,21 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class SearchFragment : Fragment() {
 
     private val viewModel: SearchViewModel by viewModels()
-    private val repositoriesAdapter = RepositoriesAdapter()
-    private val usersAdapter = UsersAdapter()
+    private val repositoriesAdapter = RepositoriesAdapter(repoClick)
+    private val usersAdapter = UsersAdapter(userClick)
     private lateinit var binding: SearchFragmentBinding
+
+    private val userClick: (User) -> Unit
+        get() = { user: User ->
+            val action = SearchFragmentDirections.actionSearchFragmentToUserDetailFragment(user)
+            findNavController().navigate(action)
+        }
+
+    private val repoClick: (Repository) -> Unit
+        get() = { repo: Repository ->
+            val action = SearchFragmentDirections.actionSearchFragmentToRepoDetailFragment(repo)
+            findNavController().navigate(action)
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

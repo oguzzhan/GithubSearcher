@@ -11,7 +11,7 @@ import com.ozzy.githubsearcher.databinding.ItemRepositoryBinding
 /**
  * Created by Oğuzhan Karacan on 1.01.2021.
  */
-class RepositoriesAdapter :
+class RepositoriesAdapter(val onClick: (Repository) -> Unit) :
     ListAdapter<Repository, RepositoriesAdapter.RepositoryViewHolder>(DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
@@ -29,6 +29,7 @@ class RepositoriesAdapter :
 
         fun bind(repo: Repository) {
             binding.repository = repo
+            binding.root.setOnClickListener { onClick.invoke(repo) }
             binding.executePendingBindings()
         }
     }

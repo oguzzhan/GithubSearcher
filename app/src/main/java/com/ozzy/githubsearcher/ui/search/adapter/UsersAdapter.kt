@@ -11,7 +11,8 @@ import com.ozzy.githubsearcher.databinding.ItemUserBinding
 /**
  * Created by Oğuzhan Karacan on 2.01.2021.
  */
-class UsersAdapter : ListAdapter<User, UsersAdapter.UserViewHolder>(DIFF_UTIL) {
+class UsersAdapter(val onClick: (User) -> Unit) :
+    ListAdapter<User, UsersAdapter.UserViewHolder>(DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -28,6 +29,7 @@ class UsersAdapter : ListAdapter<User, UsersAdapter.UserViewHolder>(DIFF_UTIL) {
 
         fun bind(user: User) {
             binding.user = user
+            binding.root.setOnClickListener { onClick.invoke(user) }
             binding.executePendingBindings()
         }
     }
