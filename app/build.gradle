@@ -62,7 +62,6 @@ dependencies {
     implementation(CoreDependencies.LIVE_DATA)
     implementation(CoreDependencies.VIEW_MODEL)
     implementation(CoreDependencies.PAGING)
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     /* Test */
     testImplementation(TestDependencies.JUNIT)
